@@ -1,0 +1,46 @@
+---
+import InboxDemo from './InboxDemo.astro';
+import ChannelIcon from './ChannelIcon.astro';
+---
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="copy">
+      <p class="eyebrow pill">AI-powered priority inbox</p>
+      <h1 class="display">Less noise.<br /><em>More clarity.</em></h1>
+      <p class="lede">
+        Clario reads across your email, Slack, WhatsApp and X&nbsp;DMs, finds the decisions, blockers and follow-ups that
+        actually need you, and tells you what to do first. Everything else can wait.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#waitlist">Get early access
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+        <a class="btn btn-ghost" href="#demo">Try the demo inbox</a>
+      </div>
+      <ul class="channels" aria-label="Supported channels">
+        <li><ChannelIcon channel="email" /> Email</li>
+        <li><ChannelIcon channel="slack" /> Slack</li>
+        <li><ChannelIcon channel="whatsapp" /> WhatsApp</li>
+        <li><ChannelIcon channel="x" /> X DMs</li>
+        <li class="more">→ one calm list</li>
+      </ul>
+    </div>
+    <div class="demo-wrap" id="demo"><InboxDemo /></div>
+  </div>
+</section>
+<style>
+  .hero { padding-top: clamp(32px, 6vw, 72px); padding-bottom: calc(var(--section-y) * .5); position: relative; overflow: clip; }
+  .hero::before { content: ''; position: absolute; inset: -20% -10% auto; height: 640px; z-index: -1;
+    background: radial-gradient(48% 50% at 50% 0%, #e4f2ec 0%, rgb(228 242 236 / 0) 70%), radial-gradient(30% 40% at 85% 10%, #fbf0d9 0%, rgb(251 240 217 / 0) 70%); }
+  .copy { max-width: 880px; margin-inline: auto; text-align: center; display: grid; gap: 28px; justify-items: center; }
+  h1 { font-size: clamp(3rem, 8.4vw, 6.25rem); }
+  .pill { padding: 7px 14px 7px 12px; border-radius: 999px; background: var(--calm-tint); }
+  .pill::before { width: 7px; height: 7px; border-radius: 50%; background: var(--calm); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgb(47 125 99 / .18); } }
+  .lede { margin-inline: auto; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .channels { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; color: var(--ink-3); font-size: .9rem; font-weight: 500; }
+  .channels li { display: inline-flex; align-items: center; gap: 8px; }
+  .channels .more { color: var(--calm); }
+  .demo-wrap { margin-top: clamp(40px, 6vw, 72px); scroll-margin-top: 90px; }
+</style>

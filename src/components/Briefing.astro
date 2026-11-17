@@ -1,0 +1,71 @@
+---
+const stats = [
+  { n: 2, l: 'Urgent decisions', k: 'urgent' },
+  { n: 3, l: 'Team blockers', k: 'blocker' },
+  { n: 2, l: 'Follow-ups', k: 'follow' },
+];
+const items = [
+  { k: 'urgent', t: 'Sign the vendor contract', s: 'Due today, 5:00 PM · Priya Nair · Email' },
+  { k: 'urgent', t: 'Confirm Q3 figures for the board deck', s: 'Due today, 3:00 PM · Dana Whitfield · Email' },
+  { k: 'blocker', t: 'Approve production access', s: 'Marcus is blocked · Slack #eng-platform' },
+  { k: 'follow', t: 'Send Elena the proposal', s: 'Overdue by 2 days · WhatsApp' },
+];
+const bullets = ['Critical decisions pending', 'People waiting on a response', 'Upcoming deadlines', 'Teammates blocked on you', 'Opportunities worth acting on'];
+---
+<section class="section dark briefing" id="briefing">
+  <div class="wrap grid">
+    <div class="copy reveal">
+      <p class="eyebrow">Daily AI briefing</p>
+      <h2 class="h2">Start the day knowing exactly <em>what matters.</em></h2>
+      <p class="lede">Instead of scrolling to find out what’s on fire, open one calm page. Every item links back to the original conversation, so you can always check the source.</p>
+      <ul class="ticks">{bullets.map((b) => <li>{b}</li>)}</ul>
+    </div>
+    <div class="card reveal">
+      <div class="c-head">
+        <div>
+          <p class="greet">Good morning</p>
+          <p class="sub">Here’s what needs you today.</p>
+        </div>
+        <span class="tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z" /></svg>AI-generated</span>
+      </div>
+      <dl class="stats">
+        {stats.map((s) => (<div class={s.k}><dt>{s.l}</dt><dd>{s.n}</dd></div>))}
+      </dl>
+      <ol class="items">
+        {items.map((i) => (
+          <li><i class={`bar ${i.k}`}></i><div><strong>{i.t}</strong><span>{i.s}</span></div><svg class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></li>
+        ))}
+      </ol>
+      <p class="foot">Sample counts for illustration · Refresh anytime</p>
+    </div>
+  </div>
+</section>
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 6vw, 88px); align-items: center; position: relative; }
+  .copy { display: grid; gap: 22px; }
+  .ticks { display: grid; gap: 10px; margin-top: 6px; }
+  .ticks li { display: flex; gap: 12px; align-items: center; color: #dfe2ea; font-weight: 500; }
+  .ticks li::before { content: ''; width: 18px; height: 18px; border-radius: 50%; flex: none; background: var(--calm-bright) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23141a2e' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/11px no-repeat; }
+  .card { background: var(--paper); color: var(--ink); border-radius: var(--radius-lg); padding: 28px; box-shadow: 0 40px 80px rgb(0 0 0 / .35); display: grid; gap: 22px; }
+  .c-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .greet { font-family: var(--font-display); font-size: 2rem; font-weight: 450; letter-spacing: -.02em; line-height: 1.1; }
+  .sub { color: var(--ink-2); font-size: .95rem; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; background: var(--calm-tint); color: var(--calm); font-size: .72rem; font-weight: 650; letter-spacing: .05em; text-transform: uppercase; padding: 6px 10px; border-radius: 99px; white-space: nowrap; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0; }
+  .stats div { padding: 14px 14px 12px; border-radius: 12px; display: grid; gap: 2px; }
+  .stats .urgent { background: var(--urgent-tint); color: var(--urgent-ink); } .stats .blocker { background: var(--blocker-tint); color: var(--blocker-ink); } .stats .follow { background: var(--follow-tint); color: var(--follow-ink); }
+  dt { font-size: .74rem; font-weight: 650; order: 2; letter-spacing: .01em; }
+  dd { margin: 0; font-family: var(--font-display); font-size: 2.4rem; font-weight: 450; line-height: 1; font-variant-numeric: lining-nums; }
+  .items { display: grid; gap: 4px; }
+  .items li { display: flex; align-items: center; gap: 14px; padding: 12px 10px; border-radius: 12px; transition: background .15s; }
+  .items li:hover { background: #fff; }
+  .items li > div { flex: 1; display: grid; min-width: 0; }
+  .items strong { font-size: .96rem; font-weight: 600; }
+  .items span { font-size: .82rem; color: var(--ink-3); }
+  .bar { width: 4px; height: 34px; border-radius: 4px; flex: none; }
+  .bar.urgent { background: var(--urgent); } .bar.blocker { background: var(--blocker); } .bar.follow { background: var(--follow); }
+  .go { color: var(--ink-3); flex: none; }
+  .foot { font-size: .76rem; color: var(--ink-3); text-align: center; padding-top: 14px; border-top: 1px solid var(--line); }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .stats { grid-template-columns: 1fr; } .stats div { grid-template-columns: auto 1fr; align-items: center; } dd { order: 1; font-size: 1.8rem; } .c-head { flex-direction: column; } }
+</style>

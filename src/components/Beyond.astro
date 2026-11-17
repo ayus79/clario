@@ -1,0 +1,75 @@
+---
+const fu = [
+  { t: 'Mon', d: 'You tell Elena, “I’ll send the proposal Monday.”', s: 'done' },
+  { t: 'Tue', d: 'Elena checks in. Clario spots the promise and the silence.', s: 'flag' },
+  { t: 'Today', d: 'Reminder: proposal is overdue. One tap to open the thread.', s: 'now' },
+  { t: 'Next', d: 'You reply in WhatsApp. Clario notices and closes the loop.', s: 'todo' },
+];
+---
+<section class="section beyond" id="beyond">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Beyond sorting</p>
+      <h2 class="h2">Clario tracks the things people are <em>waiting on.</em></h2>
+      <p class="lede">A priority inbox that only sorts is half the job. Clario also remembers what’s open: who owes whom a reply, and who is stuck until you act.</p>
+    </div>
+    <div class="two">
+      <article class="panel reveal">
+        <span class="chip follow">Follow-ups</span>
+        <h3>Promises that follow themselves.</h3>
+        <p class="desc">Clario finds unanswered messages and the things you said you’d do, extracts dates where it can, and reminds you as deadlines approach. If a new message arrives, the follow-up updates itself.</p>
+        <ol class="tl">
+          {fu.map((x) => (
+            <li class={x.s}><span class="when">{x.t}</span><span class="what">{x.d}</span></li>
+          ))}
+        </ol>
+      </article>
+      <article class="panel reveal" style="transition-delay:90ms">
+        <span class="chip blocker">Team blockers</span>
+        <h3>See who’s stuck because of you.</h3>
+        <p class="desc">When a teammate can’t move forward without your approval or answer, Clario highlights it, shows who’s waiting, and tells you what’s at stake if it slips.</p>
+        <div class="blk">
+          <div class="who"><span class="av">ML</span><div><strong>Marcus Lee</strong><span>Engineering · via Slack</span></div></div>
+          <dl>
+            <div><dt>Waiting for</dt><dd>Production access approval</dd></div>
+            <div><dt>Impact of delay</dt><dd>Billing fix can’t ship; QA already passed</dd></div>
+          </dl>
+          <div class="acts"><span class="a primary">Resolve</span><span class="a">Defer</span><span class="a">Dismiss</span></div>
+        </div>
+        <p class="fine">Illustrative, with fictional data.</p>
+      </article>
+    </div>
+  </div>
+</section>
+<style>
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(24px, 3vw, 36px); display: grid; gap: 16px; align-content: start; box-shadow: var(--shadow-1); }
+  .panel .chip { justify-self: start; }
+  h3 { font-family: var(--font-display); font-size: clamp(1.6rem, 2.4vw, 2rem); font-weight: 460; letter-spacing: -.02em; line-height: 1.15; }
+  .desc { color: var(--ink-2); font-size: 1rem; }
+  .tl { display: grid; gap: 0; margin-top: 8px; position: relative; }
+  .tl li { display: grid; grid-template-columns: 56px 1fr; gap: 14px; padding: 12px 0; position: relative; }
+  .tl li::before { content: ''; position: absolute; left: 61px; top: 0; bottom: 0; width: 1.5px; background: var(--line); }
+  .tl li:first-child::before { top: 50%; } .tl li:last-child::before { bottom: 50%; }
+  .tl li::after { content: ''; position: absolute; left: 56px; top: 50%; translate: 0 -50%; width: 11px; height: 11px; border-radius: 50%; background: var(--paper); border: 2px solid var(--line-strong); }
+  .tl li.done::after { background: var(--ink-3); border-color: var(--ink-3); }
+  .tl li.flag::after { background: var(--follow); border-color: var(--follow); }
+  .tl li.now::after { background: var(--urgent); border-color: var(--urgent); box-shadow: 0 0 0 5px var(--urgent-tint); }
+  .tl li.todo::after { border-color: var(--calm); }
+  .when { font-size: .78rem; font-weight: 650; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; padding-top: 2px; }
+  .what { padding-left: 24px; font-size: .94rem; color: var(--ink-2); }
+  .tl .now .what { color: var(--ink); font-weight: 550; }
+  .blk { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; display: grid; gap: 18px; margin-top: 8px; }
+  .who { display: flex; gap: 12px; align-items: center; }
+  .who div { display: grid; line-height: 1.35; } .who span:not(.av) { color: var(--ink-3); font-size: .84rem; }
+  .av { width: 40px; height: 40px; border-radius: 50%; background: var(--blocker-tint); color: var(--blocker-ink); display: grid; place-items: center; font-weight: 650; font-size: .8rem; }
+  dl { margin: 0; display: grid; gap: 12px; }
+  dl div { display: grid; gap: 2px; padding-left: 14px; border-left: 3px solid var(--blocker); }
+  dt { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 650; }
+  dd { margin: 0; font-weight: 550; font-size: .96rem; }
+  .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .a { padding: 9px 16px; border-radius: 10px; border: 1.5px solid var(--line-strong); background: #fff; font-size: .85rem; font-weight: 600; }
+  .a.primary { background: var(--calm); border-color: var(--calm); color: #fff; }
+  .fine { font-size: .78rem; color: var(--ink-3); }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+</style>

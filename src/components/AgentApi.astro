@@ -1,0 +1,48 @@
+---
+const feats = [
+  { t: 'Scoped permissions', d: 'Grant an agent read-only access to priorities, or let it mark tasks done. Nothing more.' },
+  { t: 'Full audit log', d: 'Every action an agent takes is recorded: who, what, when, so nothing is a mystery later.' },
+  { t: 'Revoke in one click', d: 'Pull an agent’s access instantly. You stay in control, always.' },
+];
+---
+<section class="section dark agents" id="agents">
+  <div class="wrap grid">
+    <div class="copy reveal">
+      <p class="eyebrow">Agent API · Planned</p>
+      <h2 class="h2">Let your AI agents work from <em>your priorities.</em></h2>
+      <p class="lede">Clario’s prioritised view of your work becomes something your other tools and agents can use: authenticated, scoped and auditable, on terms you set.</p>
+      <ul class="feats">{feats.map((f) => (<li><strong>{f.t}</strong><span>{f.d}</span></li>))}</ul>
+    </div>
+    <figure class="code reveal">
+      <div class="bar"><i></i><i></i><i></i><figcaption>Illustrative · API design in progress</figcaption></div>
+<pre><code><span class="c">// Ask for what needs attention</span>
+<span class="k">GET</span> /v1/priorities?category=<span class="s">urgent_decision</span>
+<span class="c">Authorization: Bearer agent_••••  (scope: priorities.read)</span>
+
+&#123;
+  <span class="p">"items"</span>: [&#123;
+    <span class="p">"id"</span>: <span class="s">"pri_8f2c"</span>,
+    <span class="p">"category"</span>: <span class="s">"urgent_decision"</span>,
+    <span class="p">"reason"</span>: <span class="s">"Approval requested, deadline today"</span>,
+    <span class="p">"due"</span>: <span class="s">"2026-11-17T17:00:00Z"</span>,
+    <span class="p">"source"</span>: &#123; <span class="p">"channel"</span>: <span class="s">"email"</span> &#125;
+  &#125;]
+&#125;</code></pre>
+    </figure>
+  </div>
+</section>
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 6vw, 88px); align-items: center; position: relative; }
+  .copy { display: grid; gap: 22px; }
+  .feats { display: grid; gap: 18px; margin-top: 6px; }
+  .feats li { display: grid; gap: 2px; padding-left: 20px; border-left: 2px solid var(--calm-bright); }
+  .feats strong { font-weight: 650; }
+  .feats span { color: #b8bdcc; font-size: .97rem; }
+  .code { margin: 0; background: #0c101e; border: 1px solid #262e49; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 40px 80px rgb(0 0 0 / .4); min-width: 0; }
+  .bar { display: flex; align-items: center; gap: 7px; padding: 13px 18px; border-bottom: 1px solid #1d2540; }
+  .bar i { width: 10px; height: 10px; border-radius: 50%; background: #2b3453; }
+  figcaption { margin-left: 8px; font-size: .75rem; color: #8b93aa; }
+  pre { margin: 0; padding: 22px 24px 26px; overflow-x: auto; font: 500 .84rem/1.75 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; color: #d8dcea; }
+  .c { color: #6f7893; } .k { color: #ff8f80; font-weight: 700; } .p { color: #9db4ff; } .s { color: #7fd6b3; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+</style>

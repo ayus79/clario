@@ -1,0 +1,42 @@
+---
+const phases = [
+  { p: 'Phase 1', t: 'Unified priority inbox', tag: 'First', items: ['Sign in & Gmail connection', 'Message sync & normalisation', 'AI classification into four priorities', 'Search & filters', 'Basic follow-up detection'], out: 'Connect an email account and see messages sorted by what needs you.' },
+  { p: 'Phase 2', t: 'Intelligence & productivity', tag: 'Next', items: ['Slack & WhatsApp', 'Daily AI briefing', 'Team blocker detection', 'Deadline extraction & reminders', 'Feedback on classifications'], out: 'Clario becomes a real assistant for understanding communication and tracking work.' },
+  { p: 'Phase 3', t: 'Automation & AI agents', tag: 'Later', items: ['X DM integration', 'Agent API', 'AI reply suggestions', 'Authorised actions & follow-up workflows', 'Reporting & analytics'], out: 'Controlled automation on top of everything Clario already surfaces.' },
+];
+---
+<section class="section roadmap" id="roadmap">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Roadmap</p>
+      <h2 class="h2">Built in steps, so each one is <em>genuinely useful.</em></h2>
+      <p class="lede">We’d rather ship a small thing you trust than a big thing you don’t. Integrations and AI quality are the hard parts, so we start there.</p>
+    </div>
+    <div class="phases">
+      {phases.map((ph, i) => (
+        <article class:list={['ph', 'reveal', { first: i === 0 }]} style={`transition-delay:${i * 80}ms`}>
+          <p class="tag">{ph.tag}</p>
+          <p class="num">{ph.p}</p>
+          <h3>{ph.t}</h3>
+          <ul>{ph.items.map((x) => <li>{x}</li>)}</ul>
+          <p class="out"><b>Outcome</b>{ph.out}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .ph { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; display: grid; gap: 14px; align-content: start; position: relative; }
+  .ph.first { border-color: var(--ink); box-shadow: var(--shadow-2); }
+  .tag { position: absolute; top: 24px; right: 24px; font-size: .7rem; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; padding: 4px 10px; border-radius: 99px; background: var(--paper-2); color: var(--ink-2); }
+  .first .tag { background: var(--calm); color: #fff; }
+  .num { font-size: .78rem; font-weight: 650; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-3); }
+  h3 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 470; letter-spacing: -.015em; line-height: 1.15; }
+  ul { display: grid; gap: 9px; font-size: .95rem; color: var(--ink-2); }
+  li { display: flex; gap: 10px; } li::before { content: ''; flex: none; width: 14px; height: 14px; margin-top: .3em; border-radius: 50%; border: 1.5px solid var(--line-strong); }
+  .first li::before { border-color: var(--calm); background: var(--calm-tint); }
+  .out { padding-top: 16px; border-top: 1px dashed var(--line-strong); font-size: .9rem; color: var(--ink-2); display: grid; gap: 2px; }
+  .out b { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink); }
+  @media (max-width: 960px) { .phases { grid-template-columns: 1fr; } }
+</style>

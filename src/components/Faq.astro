@@ -1,0 +1,40 @@
+---
+const faqs = [
+  { q: 'Is Clario another email client?', a: 'No. Clario sits on top of the places you already communicate. It tells you what needs attention and links you to the original conversation. You reply where the conversation lives, and Clario notices.' },
+  { q: 'Will Clario send messages for me?', a: 'Not by default. Clario starts by surfacing and recommending. Drafting replies and acting on your behalf come later, are opt-in, and sit behind permissions you control.' },
+  { q: 'Which channels will it support first?', a: 'Email (Gmail) comes first, followed by Slack and WhatsApp, then X DMs. The roadmap above shows the order. Provider limits may shift things.' },
+  { q: 'Who is Clario for?', a: 'Anyone whose work arrives through too many channels: founders, executives, managers and busy professionals. If someone has ever been blocked waiting on you, it’s for you.' },
+  { q: 'Is my data used to train AI models?', a: 'No, not without your explicit consent and appropriate controls. We’ll also be clear about exactly what’s synced and processed, and how to delete it.' },
+  { q: 'How much will it cost?', a: 'Pricing isn’t final yet. Early-access members hear first, and get a say in how it’s shaped.' },
+];
+---
+<section class="section faq" id="faq">
+  <div class="wrap narrow">
+    <div class="section-head center reveal">
+      <p class="eyebrow">Questions</p>
+      <h2 class="h2">Good things to ask.</h2>
+    </div>
+    <div class="list reveal">
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}<span class="pm" aria-hidden="true"></span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .narrow { max-width: calc(820px + var(--gutter) * 2); }
+  .list { border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 4px; font-weight: 600; font-size: 1.08rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--calm); }
+  .pm { position: relative; flex: none; width: 22px; height: 22px; }
+  .pm::before, .pm::after { content: ''; position: absolute; inset: 50% 3px auto; height: 1.8px; background: currentColor; translate: 0 -50%; transition: rotate .25s; }
+  .pm::after { rotate: 90deg; }
+  details[open] .pm::after { rotate: 0deg; }
+  details p { padding: 0 4px 24px; color: var(--ink-2); max-width: 64ch; animation: open .3s ease; }
+  @keyframes open { from { opacity: 0; translate: 0 -6px; } }
+</style>

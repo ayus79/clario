@@ -1,0 +1,36 @@
+---
+import Logo from './Logo.astro';
+const links = [
+  { href: '#product', label: 'Product' },
+  { href: '#how', label: 'How it works' },
+  { href: '#trust', label: 'Trust' },
+  { href: '#agents', label: 'Agent API' },
+  { href: '#roadmap', label: 'Roadmap' },
+];
+---
+<header class="nav" data-nav>
+  <div class="wrap bar">
+    <a href="/" aria-label="Clario home"><Logo /></a>
+    <nav aria-label="Primary" class="links">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <div class="right">
+      <a class="btn btn-primary sm" href="#waitlist">Get early access</a>
+    </div>
+  </div>
+</header>
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; transition: background .25s, box-shadow .25s, backdrop-filter .25s; }
+  .nav.scrolled { background: rgb(250 248 244 / .85); backdrop-filter: saturate(1.4) blur(14px); box-shadow: 0 1px 0 var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 24px; }
+  .links { display: flex; gap: 6px; }
+  .links a { padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: .94rem; font-weight: 500; color: var(--ink-2); transition: color .15s, background .15s; }
+  .links a:hover { color: var(--ink); background: var(--paper-2); }
+  .sm { padding: .7rem 1.15rem; font-size: .9rem; }
+  @media (max-width: 860px) { .links { display: none; } }
+</style>
+<script>
+  const nav = document.querySelector('[data-nav]');
+  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+</script>

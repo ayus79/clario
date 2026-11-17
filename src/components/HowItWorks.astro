@@ -1,0 +1,37 @@
+---
+const steps = [
+  { n: '01', t: 'Connect', d: 'Link your accounts with secure sign-in. Clario syncs only new messages, and you can disconnect any time.' },
+  { n: '02', t: 'Understand', d: 'Clario reads each message with its conversation history to find intent, deadlines and who’s waiting.' },
+  { n: '03', t: 'Prioritize', d: 'Every item lands in one of four categories, with a plain-English reason you can check.' },
+  { n: '04', t: 'Act', d: 'Open your briefing, handle what matters, and reply in the original app. Clario sees it and closes the loop.' },
+];
+---
+<section class="section how" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">How it works</p>
+      <h2 class="h2">From overload to <em>one clear list</em> in four steps.</h2>
+    </div>
+    <ol class="steps">
+      {steps.map((s, i) => (
+        <li class="step reveal" style={`transition-delay:${i * 80}ms`}>
+          <span class="n">{s.n}</span>
+          <h3>{s.t}</h3>
+          <p>{s.d}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; counter-reset: s; }
+  .step { padding: 0 28px 0 0; position: relative; display: grid; gap: 12px; align-content: start; }
+  .step::before { content: ''; position: absolute; top: 19px; left: 56px; right: 14px; height: 1.5px; background: repeating-linear-gradient(90deg, var(--line-strong) 0 6px, transparent 6px 12px); }
+  .step:last-child::before { display: none; }
+  .n { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: var(--ink-inverse); font-size: .8rem; font-weight: 650; letter-spacing: .03em; position: relative; z-index: 1; }
+  .step:last-child .n { background: var(--calm); }
+  h3 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 480; letter-spacing: -.015em; margin-top: 8px; }
+  p { color: var(--ink-2); font-size: .98rem; }
+  @media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; gap: 40px 28px; } .step::before { display: none; } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+</style>

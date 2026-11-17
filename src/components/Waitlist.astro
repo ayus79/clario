@@ -1,0 +1,55 @@
+---
+const endpoint = import.meta.env.PUBLIC_WAITLIST_ENDPOINT ?? '';
+---
+<section class="section cta" id="waitlist">
+  <div class="wrap">
+    <div class="box reveal">
+      <div class="glow" aria-hidden="true"></div>
+      <h2 class="h2">Close the tabs.<br /><em>Keep the signal.</em></h2>
+      <p class="lede">Join the early-access list. We’ll invite people in waves, starting with Gmail.</p>
+      <form class="form" data-waitlist data-endpoint={endpoint} novalidate>
+        <label class="sr-only" for="email">Email address</label>
+        <input id="email" name="email" type="email" required placeholder="you@company.com" autocomplete="email" />
+        <button class="btn btn-light" type="submit">Get early access</button>
+      </form>
+      <p class="msg" role="status" aria-live="polite" data-msg>No spam. One email when your spot is ready.</p>
+    </div>
+  </div>
+</section>
+<style>
+  .box { position: relative; overflow: clip; text-align: center; display: grid; gap: 22px; justify-items: center; background: var(--ink); color: var(--ink-inverse); border-radius: calc(var(--radius-lg) + 8px); padding: clamp(48px, 8vw, 96px) clamp(24px, 6vw, 80px); box-shadow: var(--shadow-3); }
+  .glow { position: absolute; inset: -40% 10% auto; height: 420px; background: radial-gradient(50% 50% at 50% 50%, rgb(79 178 143 / .28), transparent 70%); pointer-events: none; }
+  .box > *:not(.glow) { position: relative; }
+  .h2 { font-size: clamp(2.4rem, 5.6vw, 4.2rem); }
+  .h2 em { color: var(--calm-bright); }
+  .lede { color: #b8bdcc; margin-inline: auto; }
+  .form { display: flex; gap: 10px; width: min(100%, 480px); padding: 6px; border-radius: 999px; background: rgb(255 255 255 / .08); border: 1px solid rgb(255 255 255 / .18); transition: border-color .2s, background .2s; }
+  .form:focus-within { border-color: var(--calm-bright); background: rgb(255 255 255 / .12); }
+  input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: #fff; font: inherit; padding: 0 16px; }
+  input::placeholder { color: #8b93aa; }
+  .form .btn { padding: .8rem 1.3rem; }
+  .msg { font-size: .88rem; color: #8b93aa; min-height: 1.5em; }
+  .msg.ok { color: var(--calm-bright); font-weight: 600; } .msg.err { color: #ff9a8c; }
+  @media (max-width: 520px) { .form { flex-direction: column; border-radius: 20px; padding: 10px; } input { padding: 12px 10px; } }
+</style>
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-waitlist]');
+  const msg = document.querySelector<HTMLElement>('[data-msg]');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg!.className = 'msg err'; msg!.textContent = 'Please enter a valid email address.'; return;
+    }
+    const endpoint = form.dataset.endpoint;
+    try {
+      if (endpoint) {
+        const r = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        if (!r.ok) throw new Error('bad');
+      }
+      msg!.className = 'msg ok'; msg!.textContent = 'You’re on the list. We’ll be in touch.'; form.reset();
+    } catch {
+      msg!.className = 'msg err'; msg!.textContent = 'Something went wrong. Please try again.';
+    }
+  });
+</script>

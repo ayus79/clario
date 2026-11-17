@@ -1,0 +1,17 @@
+---
+import Logo from './Logo.astro';
+---
+<footer class="foot">
+  <div class="wrap row">
+    <div class="brand"><Logo /><p>Less noise. More clarity.</p></div>
+    <nav aria-label="Footer"><a href="#product">Product</a><a href="#how">How it works</a><a href="#security">Security</a><a href="#roadmap">Roadmap</a><a href="#faq">FAQ</a></nav>
+  </div>
+  <div class="wrap small"><p>© 2026 Clario. Product visuals use fictional sample data.</p></div>
+</footer>
+<style>
+  .foot { border-top: 1px solid var(--line); padding-block: 48px 36px; }
+  .row { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+  .brand { display: grid; gap: 10px; } .brand p { color: var(--ink-3); font-size: .92rem; }
+  nav { display: flex; gap: 8px 26px; flex-wrap: wrap; } nav a { text-decoration: none; color: var(--ink-2); font-weight: 500; font-size: .94rem; } nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+  .small { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); font-size: .82rem; color: var(--ink-3); }
+</style>

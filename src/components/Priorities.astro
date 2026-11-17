@@ -1,0 +1,42 @@
+---
+const cards = [
+  { k: 'urgent', name: 'Urgent decision', mean: 'Needs you now.', ex: ['Approvals and sign-offs', 'Deadlines that bite today', 'Business-critical requests'], q: 'Vendor contract needs sign-off by 5 PM' },
+  { k: 'blocker', name: 'Team blocker', mean: 'Someone is waiting on you.', ex: ['Pending approvals', 'Missing information', 'Work stalled behind your reply'], q: 'Marcus can’t ship until you approve prod access' },
+  { k: 'follow', name: 'Follow-up', mean: 'Needs action later.', ex: ['Unanswered requests', 'Prospects and partnerships', 'Things you promised'], q: 'Elena asked for the proposal two days ago' },
+  { k: 'fyi', name: 'FYI', mean: 'Nothing required.', ex: ['Updates and notifications', 'Announcements', 'Digests and receipts'], q: 'Office closed this Friday' },
+];
+---
+<section class="section priorities" id="product">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <p class="eyebrow">Four kinds of attention</p>
+      <h2 class="h2">Every message gets one honest label. <em>You decide what’s next.</em></h2>
+      <p class="lede">Four categories are few enough to read at a glance, and distinct enough that you never have to think about which one you’re looking at.</p>
+    </div>
+    <div class="cards">
+      {cards.map((c, i) => (
+        <article class={`card ${c.k} reveal`} style={`transition-delay:${i * 70}ms`}>
+          <span class={`chip ${c.k}`}>{c.name}</span>
+          <h3>{c.mean}</h3>
+          <ul>{c.ex.map((e) => <li>{e}</li>)}</ul>
+          <p class="q">“{c.q}”</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 26px 24px 24px; display: grid; gap: 14px; align-content: start; box-shadow: var(--shadow-1); overflow: hidden; transition: transform .25s, box-shadow .25s; }
+  .card::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: var(--c); }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); }
+  .card.urgent { --c: var(--urgent); } .card.blocker { --c: var(--blocker); } .card.follow { --c: var(--follow); } .card.fyi { --c: var(--fyi); }
+  .chip { justify-self: start; }
+  h3 { font-family: var(--font-display); font-weight: 480; font-size: 1.6rem; letter-spacing: -.015em; line-height: 1.15; }
+  ul { display: grid; gap: 8px; color: var(--ink-2); font-size: .94rem; }
+  li { display: flex; gap: 10px; }
+  li::before { content: ''; flex: none; width: 5px; height: 5px; margin-top: .62em; border-radius: 50%; background: var(--c); }
+  .q { margin-top: 6px; padding-top: 16px; border-top: 1px dashed var(--line-strong); font-size: .86rem; color: var(--ink-3); font-style: italic; }
+  @media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } }
+</style>

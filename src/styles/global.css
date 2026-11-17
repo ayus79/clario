@@ -1,0 +1,160 @@
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/inter/wght.css';
+
+:root {
+  /* Surfaces - warm paper keeps long reading calm; pure white only for "objects" */
+  --paper: #faf8f4;
+  --paper-2: #f3efe7;
+  --surface: #ffffff;
+  --line: #e6e1d6;
+  --line-strong: #d3ccbc;
+
+  /* Ink - near-black navy signals trust/authority without the harshness of #000 */
+  --ink: #141a2e;
+  --ink-2: #454c5f;
+  --ink-3: #6a7082;
+  --ink-inverse: #faf8f4;
+
+  /* Brand accent - sage green = "handled / calm". Used sparingly so it reads as relief. */
+  --calm: #2f7d63;
+  --calm-bright: #4fb28f;
+  --calm-tint: #e4f2ec;
+
+  /* Semantic priority palette - hue-distinct, each tuned to AA on its tint */
+  --urgent: #c93a2a;
+  --urgent-ink: #a8281a;
+  --urgent-tint: #fcebe8;
+  --blocker: #c27a0a;
+  --blocker-ink: #84510a;
+  --blocker-tint: #fbf0d9;
+  --follow: #3558d6;
+  --follow-ink: #2a47b0;
+  --follow-tint: #e8edfc;
+  --fyi: #6a7082;
+  --fyi-ink: #454c5f;
+  --fyi-tint: #eceef2;
+
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow-1: 0 1px 2px rgb(20 26 46 / 0.05), 0 2px 8px rgb(20 26 46 / 0.04);
+  --shadow-2: 0 2px 4px rgb(20 26 46 / 0.04), 0 12px 32px rgb(20 26 46 / 0.08);
+  --shadow-3: 0 4px 8px rgb(20 26 46 / 0.05), 0 32px 80px rgb(20 26 46 / 0.14);
+
+  --wrap: 1160px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --section-y: clamp(72px, 10vw, 128px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-feature-settings: 'cv11', 'ss03';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; }
+h1, h2, h3, h4 { margin: 0; font-weight: 500; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+/* Typography scale: serif for emotion/story, sans for UI/information */
+.display {
+  font-family: var(--font-display);
+  font-weight: 450;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  font-variation-settings: 'opsz' 144;
+}
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 450;
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.h2 em, .display em { font-style: italic; color: var(--calm); font-weight: 400; }
+.lede {
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  color: var(--ink-2);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--calm);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before { content: ''; width: 18px; height: 1.5px; background: currentColor; }
+
+.wrap { width: 100%; max-width: calc(var(--wrap) + var(--gutter) * 2); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section-y); }
+.section-head { display: grid; gap: 18px; margin-bottom: clamp(40px, 6vw, 72px); }
+.section-head.center { text-align: center; justify-items: center; }
+.section-head.center .lede { margin-inline: auto; }
+
+/* Buttons - one primary action style so the eye always knows where to go */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 0.85rem 1.4rem; border-radius: 999px; border: 1.5px solid transparent;
+  font-weight: 600; font-size: 0.975rem; text-decoration: none; line-height: 1;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+.btn-primary { background: var(--ink); color: var(--ink-inverse); box-shadow: 0 6px 18px rgb(20 26 46 / .22); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgb(20 26 46 / .28); background: #1d2540; }
+.btn-ghost { border-color: var(--line-strong); background: transparent; color: var(--ink); }
+.btn-ghost:hover { border-color: var(--ink); background: var(--surface); }
+.btn-light { background: var(--ink-inverse); color: var(--ink); }
+.btn-light:hover { transform: translateY(-1px); background: #fff; }
+
+:focus-visible { outline: 3px solid var(--follow); outline-offset: 3px; border-radius: 6px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 16px; top: -60px; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; z-index: 100; }
+.skip:focus { top: 16px; }
+
+/* Priority chips (shared) */
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 0.28rem 0.7rem 0.28rem 0.55rem; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 600; line-height: 1.2; white-space: nowrap;
+}
+.chip::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.urgent { background: var(--urgent-tint); color: var(--urgent-ink); }
+.chip.blocker { background: var(--blocker-tint); color: var(--blocker-ink); }
+.chip.follow { background: var(--follow-tint); color: var(--follow-ink); }
+.chip.fyi { background: var(--fyi-tint); color: var(--fyi-ink); }
+
+/* Reveal on scroll (progressive enhancement; visible by default w/o JS) */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.js .reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .reveal { opacity: 1; transform: none; }
+}
+
+/* Dark sections - used for emphasis moments (briefing, agent API) */
+.dark { background: var(--ink); color: var(--ink-inverse); position: relative; overflow: clip; }
+.dark::before { content: ''; position: absolute; inset: auto -10% -40% 30%; height: 600px; background: radial-gradient(50% 50% at 50% 50%, rgb(79 178 143 / .16), transparent 70%); pointer-events: none; }
+.dark .lede { color: #b8bdcc; }
+.dark .eyebrow { color: var(--calm-bright); }
+.dark .h2 em { color: var(--calm-bright); }

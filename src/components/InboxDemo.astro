@@ -1,0 +1,200 @@
+---
+import { messages, priorityMeta, channelMeta, type Priority, type Channel } from '../data/sample';
+import ChannelIcon from './ChannelIcon.astro';
+const priorities = Object.keys(priorityMeta) as Priority[];
+const channels = Object.keys(channelMeta) as Channel[];
+const count = (p: Priority) => messages.filter((m) => m.priority === p).length;
+---
+<div class="frame" data-inbox>
+  <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>Clario · Priority inbox</span></div>
+
+  <div class="toolbar">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+      <span class="sr-only">Search people, topics and conversations</span>
+      <input type="search" placeholder="Search people, topics, conversations…" data-q autocomplete="off" />
+    </label>
+    <div class="selects">
+      <div class="seg" role="group" aria-label="Filter by priority">
+        <button type="button" class="on" data-p="all" aria-pressed="true">All <b>{messages.length}</b></button>
+        {priorities.map((p) => (
+          <button type="button" data-p={p} aria-pressed="false"><span class={`dot ${p}`}></span>{priorityMeta[p].label} <b>{count(p)}</b></button>
+        ))}
+      </div>
+    </div>
+    <div class="seg chan" role="group" aria-label="Filter by channel">
+      <button type="button" class="on" data-c="all" aria-pressed="true">All channels</button>
+      {channels.map((c) => (
+        <button type="button" data-c={c} aria-pressed="false"><ChannelIcon channel={c} size={14} />{channelMeta[c]}</button>
+      ))}
+    </div>
+  </div>
+
+  <div class="body">
+    <ul class="list" role="list" data-list>
+      {messages.map((m, i) => (
+        <li>
+          <button type="button" class:list={['row', { sel: i === 0 }]} data-id={m.id} data-priority={m.priority} data-channel={m.channel}
+            data-hay={`${m.from} ${m.subject} ${m.preview} ${channelMeta[m.channel]} ${priorityMeta[m.priority].label}`.toLowerCase()}
+            aria-pressed={i === 0 ? 'true' : 'false'}>
+            <span class={`avatar ${m.priority}`} aria-hidden="true">{m.initials}</span>
+            <span class="main">
+              <span class="top">
+                <span class="from">{m.unread && <i class="unread" aria-label="Unread"></i>}{m.from}</span>
+                <span class="time">{m.time}</span>
+              </span>
+              <span class="subj">{m.subject}</span>
+              <span class="prev">{m.preview}</span>
+              <span class="meta">
+                <span class={`chip ${m.priority}`}>{priorityMeta[m.priority].label}</span>
+                <span class="via"><ChannelIcon channel={m.channel} size={13} />{channelMeta[m.channel]}</span>
+              </span>
+            </span>
+          </button>
+        </li>
+      ))}
+      <li class="empty" data-empty hidden>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m8 12.5 2.8 2.8L16 9.8" /></svg>
+        <strong>Nothing needs you here.</strong>
+        <span>That’s the feeling Clario is built for.</span>
+      </li>
+    </ul>
+
+    <aside class="detail" aria-live="polite" data-detail>
+      {messages.map((m, i) => (
+        <article data-for={m.id} hidden={i !== 0}>
+          <div class="d-head">
+            <span class={`chip ${m.priority}`}>{priorityMeta[m.priority].label}</span>
+            {m.due && <span class="due">{m.due}</span>}
+          </div>
+          <h3>{m.subject}</h3>
+          <p class="from-line">{m.from} · <span class="src">{m.source}</span></p>
+          <div class="ai">
+            <p class="ai-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z" /></svg>AI summary · why Clario flagged this</p>
+            <p class="why">{m.reason}</p>
+            <p class="next"><b>Suggested next step</b>{m.action}</p>
+          </div>
+          <div class="d-actions">
+            <button type="button" class="mini primary" tabindex="-1">Open original</button>
+            <button type="button" class="mini" tabindex="-1">Snooze</button>
+            <button type="button" class="mini" tabindex="-1">Wrong category?</button>
+          </div>
+        </article>
+      ))}
+    </aside>
+  </div>
+  <p class="note">Sample data. Every person and message here is fictional. Try the filters.</p>
+</div>
+
+<style>
+  .frame { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-3); overflow: hidden; max-width: 1120px; margin-inline: auto; text-align: left; }
+  .chrome { display: flex; align-items: center; gap: 7px; padding: 12px 18px; background: var(--paper-2); border-bottom: 1px solid var(--line); }
+  .chrome i { width: 11px; height: 11px; border-radius: 50%; background: var(--line-strong); }
+  .chrome span { margin-left: 10px; font-size: .78rem; color: var(--ink-3); font-weight: 500; }
+
+  .toolbar { display: grid; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  .search { display: flex; align-items: center; gap: 10px; padding: 0 14px; height: 44px; border: 1.5px solid var(--line); border-radius: 12px; color: var(--ink-3); background: var(--paper); transition: border-color .15s, background .15s; }
+  .search:focus-within { border-color: var(--ink); background: #fff; }
+  .search input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: .95rem; color: var(--ink); min-width: 0; }
+  .selects { overflow-x: auto; scrollbar-width: none; }
+  .seg { display: flex; gap: 6px; }
+  .selects .seg, .chan { flex-wrap: nowrap; }
+  .chan { overflow-x: auto; scrollbar-width: none; }
+  .seg button { display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; font-size: .84rem; font-weight: 550; color: var(--ink-2); white-space: nowrap; transition: all .15s; }
+  .seg button:hover { border-color: var(--line-strong); color: var(--ink); }
+  .seg button[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--ink-inverse); }
+  .seg button b { font-weight: 600; opacity: .6; font-variant-numeric: tabular-nums; }
+  .chan button { font-size: .8rem; padding: 5px 11px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.urgent { background: var(--urgent); } .dot.blocker { background: var(--blocker); } .dot.follow { background: var(--follow); } .dot.fyi { background: var(--fyi); }
+
+  .body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); min-height: 520px; }
+  .list { max-height: 560px; overflow-y: auto; border-right: 1px solid var(--line); scrollbar-width: thin; }
+  .list li { border-bottom: 1px solid var(--line); }
+  .row { width: 100%; display: flex; gap: 14px; padding: 16px 18px; text-align: left; background: transparent; border: 0; border-left: 3px solid transparent; transition: background .15s; }
+  .row:hover { background: var(--paper); }
+  .row.sel { background: var(--paper); border-left-color: var(--ink); }
+  .row[hidden], .list li[hidden] { display: none; }
+  .avatar { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: .78rem; font-weight: 650; letter-spacing: .02em; }
+  .avatar.urgent { background: var(--urgent-tint); color: var(--urgent-ink); } .avatar.blocker { background: var(--blocker-tint); color: var(--blocker-ink); }
+  .avatar.follow { background: var(--follow-tint); color: var(--follow-ink); } .avatar.fyi { background: var(--fyi-tint); color: var(--fyi-ink); }
+  .main { min-width: 0; display: grid; gap: 3px; flex: 1; }
+  .top { display: flex; justify-content: space-between; gap: 10px; }
+  .from { font-weight: 650; font-size: .94rem; display: inline-flex; align-items: center; gap: 7px; }
+  .unread { width: 7px; height: 7px; border-radius: 50%; background: var(--follow); }
+  .time { color: var(--ink-3); font-size: .78rem; font-variant-numeric: tabular-nums; }
+  .subj { font-size: .92rem; font-weight: 550; line-height: 1.35; }
+  .prev { color: var(--ink-3); font-size: .86rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .meta { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .meta .chip { font-size: .72rem; padding: .2rem .6rem .2rem .5rem; }
+  .via { display: inline-flex; gap: 6px; align-items: center; color: var(--ink-3); font-size: .76rem; font-weight: 500; }
+
+  .empty { display: grid; justify-items: center; gap: 6px; padding: 72px 24px; text-align: center; color: var(--ink-3); border: 0 !important; }
+  .empty svg { color: var(--calm); margin-bottom: 6px; }
+  .empty strong { color: var(--ink); font-family: var(--font-display); font-weight: 500; font-size: 1.35rem; }
+
+  .detail { padding: 26px 28px; background: linear-gradient(180deg, var(--paper), #fff 40%); }
+  .detail article { display: grid; gap: 14px; animation: fade .35s ease; }
+  .detail article[hidden] { display: none; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } }
+  .d-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .due { font-size: .8rem; font-weight: 600; color: var(--ink-2); background: var(--paper-2); padding: 4px 10px; border-radius: 8px; }
+  .detail h3 { font-family: var(--font-display); font-weight: 480; font-size: 1.55rem; line-height: 1.2; letter-spacing: -.015em; text-wrap: balance; }
+  .from-line { color: var(--ink-3); font-size: .88rem; margin-top: -6px; }
+  /* AI content gets its own visual language so it's never confused with original messages (FR-04) */
+  .ai { background: linear-gradient(135deg, var(--calm-tint), #f1f8f4); border: 1px solid #cfe6db; border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; }
+  .ai-label { display: inline-flex; align-items: center; gap: 7px; font-size: .72rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: var(--calm); }
+  .why { font-size: .95rem; line-height: 1.6; color: var(--ink); }
+  .next { font-size: .9rem; color: var(--ink-2); display: grid; gap: 2px; padding-top: 12px; border-top: 1px dashed #b9d8c9; }
+  .next b { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+  .d-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mini { padding: 9px 15px; border-radius: 10px; border: 1.5px solid var(--line-strong); background: #fff; font-size: .85rem; font-weight: 600; }
+  .mini.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .note { padding: 11px 18px; font-size: .78rem; color: var(--ink-3); background: var(--paper-2); border-top: 1px solid var(--line); text-align: center; }
+
+  @media (max-width: 820px) {
+    .body { grid-template-columns: 1fr; }
+    .list { max-height: 420px; border-right: 0; border-bottom: 1px solid var(--line); }
+    .detail { padding: 22px 18px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-inbox]').forEach((root) => {
+    const rows = [...root.querySelectorAll<HTMLButtonElement>('.row')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-for]')];
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const detail = root.querySelector<HTMLElement>('[data-detail]')!;
+    const q = root.querySelector<HTMLInputElement>('[data-q]')!;
+    const state = { p: 'all', c: 'all', q: '' };
+
+    const select = (id: string) => {
+      rows.forEach((r) => { const on = r.dataset.id === id; r.classList.toggle('sel', on); r.setAttribute('aria-pressed', String(on)); });
+      panels.forEach((p) => (p.hidden = p.dataset.for !== id));
+    };
+    const apply = () => {
+      let first: HTMLButtonElement | undefined;
+      let visible = 0;
+      for (const r of rows) {
+        const show = (state.p === 'all' || r.dataset.priority === state.p)
+          && (state.c === 'all' || r.dataset.channel === state.c)
+          && (!state.q || (r.dataset.hay ?? '').includes(state.q));
+        (r.parentElement as HTMLElement).hidden = !show;
+        if (show) { visible++; first ??= r; }
+      }
+      empty.hidden = visible > 0;
+      detail.style.visibility = visible ? 'visible' : 'hidden';
+      const cur = rows.find((r) => r.classList.contains('sel') && !(r.parentElement as HTMLElement).hidden);
+      if (!cur && first) select(first.dataset.id!);
+    };
+    const wire = (attr: 'p' | 'c') => root.querySelectorAll<HTMLButtonElement>(`[data-${attr}]`).forEach((b) =>
+      b.addEventListener('click', () => {
+        state[attr] = b.dataset[attr]!;
+        root.querySelectorAll<HTMLButtonElement>(`[data-${attr}]`).forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+        apply();
+      }));
+    wire('p'); wire('c');
+    rows.forEach((r) => r.addEventListener('click', () => select(r.dataset.id!)));
+    q.addEventListener('input', () => { state.q = q.value.trim().toLowerCase(); apply(); });
+  });
+</script>

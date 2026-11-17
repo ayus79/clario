@@ -1,0 +1,61 @@
+---
+const points = [
+  { t: 'Every label comes with a reason', d: 'No black box. Clario tells you in plain language why something was flagged.' },
+  { t: 'You can correct it', d: 'One tap to say “wrong category.” Clario re-evaluates as new messages arrive.' },
+  { t: 'Cautious when unsure', d: 'Low-confidence calls are handled conservatively, so important things aren’t quietly hidden.' },
+  { t: 'AI is always marked as AI', d: 'Summaries and suggestions look different from original messages, so you always know what’s whose.' },
+];
+---
+<section class="section trust" id="trust">
+  <div class="wrap grid">
+    <div class="viz reveal" aria-hidden="true">
+      <div class="msg">
+        <p class="m-meta"><b>Original message</b> · Priya Nair · Email</p>
+        <p class="m-body">“Legal cleared the final draft. We lose the discounted rate if it isn’t signed by 5 PM.”</p>
+      </div>
+      <div class="arrow"><span></span></div>
+      <div class="ai">
+        <p class="a-head"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z" /></svg>Clario’s read</span><span class="chip urgent">Urgent decision</span></p>
+        <ul class="signals">
+          <li>Approval requested</li><li>Hard deadline today</li><li>Penalty if missed</li>
+        </ul>
+        <div class="conf"><span>Confidence</span><div class="track"><i style="width:92%"></i></div><b>High</b></div>
+        <p class="fix">Not right? <u>Change category</u></p>
+      </div>
+    </div>
+    <div class="copy reveal">
+      <p class="eyebrow">Explainable by design</p>
+      <h2 class="h2">An assistant you can <em>question.</em></h2>
+      <p class="lede">You’ll only rely on a priority inbox if you trust it. So Clario shows its work, lets you overrule it, and never passes its guesses off as facts.</p>
+      <ul class="pts">
+        {points.map((p) => (<li><strong>{p.t}</strong><span>{p.d}</span></li>))}
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  .trust { background: var(--paper-2); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
+  .copy { display: grid; gap: 22px; }
+  .pts { display: grid; gap: 18px; margin-top: 6px; }
+  .pts li { display: grid; gap: 2px; padding-left: 20px; border-left: 2px solid var(--calm); }
+  .pts strong { font-weight: 650; }
+  .pts span { color: var(--ink-2); font-size: .97rem; }
+  .viz { display: grid; gap: 0; justify-items: stretch; }
+  .msg { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-1); }
+  .m-meta { font-size: .78rem; color: var(--ink-3); margin-bottom: 8px; } .m-meta b { color: var(--ink-2); font-weight: 650; }
+  .m-body { font-size: 1rem; line-height: 1.55; }
+  .arrow { height: 36px; display: grid; place-items: center; }
+  .arrow span { width: 1.5px; height: 100%; background: repeating-linear-gradient(var(--calm) 0 5px, transparent 5px 9px); position: relative; }
+  .arrow span::after { content: ''; position: absolute; bottom: -2px; left: 50%; translate: -50% 0; border: 6px solid transparent; border-top-color: var(--calm); }
+  .ai { background: linear-gradient(135deg, var(--calm-tint), #f1f8f4); border: 1px solid #cfe6db; border-radius: var(--radius); padding: 20px 22px; display: grid; gap: 16px; box-shadow: var(--shadow-2); }
+  .a-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .a-head > span:first-child { display: inline-flex; gap: 7px; align-items: center; font-size: .72rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: var(--calm); }
+  .signals { display: flex; flex-wrap: wrap; gap: 8px; }
+  .signals li { background: #fff; border: 1px solid #cfe6db; border-radius: 8px; padding: 5px 11px; font-size: .84rem; font-weight: 550; }
+  .conf { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; font-size: .82rem; color: var(--ink-2); font-weight: 500; }
+  .conf b { color: var(--calm); font-weight: 650; }
+  .track { height: 7px; background: #cfe6db; border-radius: 99px; overflow: hidden; } .track i { display: block; height: 100%; background: var(--calm); border-radius: 99px; }
+  .fix { font-size: .86rem; color: var(--ink-2); } .fix u { text-underline-offset: 3px; font-weight: 600; color: var(--ink); }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } .viz { order: 2; } }
+</style>

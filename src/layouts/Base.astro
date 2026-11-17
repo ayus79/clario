@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+interface Props { title?: string; description?: string }
+const {
+  title = 'Clario - Less noise. More clarity.',
+  description = 'Clario is an AI-powered priority inbox. It reads across email, Slack, WhatsApp and X DMs, finds the decisions, blockers and follow-ups that need you, and tells you what to do first.',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#faf8f4" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+    <script>
+      // Scroll reveal - one observer for the whole page
+      const els = document.querySelectorAll<HTMLElement>('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      } else els.forEach((el) => el.classList.add('in'));
+    </script>
+  </body>
+</html>

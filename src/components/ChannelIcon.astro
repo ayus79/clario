@@ -1,0 +1,11 @@
+---
+// Generic glyphs (not brand marks) - recognisable by shape + always paired with a text label.
+interface Props { channel: 'email' | 'slack' | 'whatsapp' | 'x'; size?: number }
+const { channel, size = 16 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {channel === 'email' && (<><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 8 8 6 8-6" /></>)}
+  {channel === 'slack' && (<><path d="M9.5 4 7.5 20M16.5 4l-2 16M4 9h16M3.5 15h16" /></>)}
+  {channel === 'whatsapp' && (<><path d="M20 11.5a8 8 0 0 1-11.7 7.1L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z" /><path d="M9 9.5c.3 2.5 2.5 4.7 5 5l1.2-1.2-1.8-1-.8.7c-.8-.3-1.7-1.2-2-2l.7-.8-1-1.8Z" /></>)}
+  {channel === 'x' && (<><path d="M5 5l14 14M19 5 5 19" /></>)}
+</svg>

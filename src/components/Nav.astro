@@ -6,31 +6,90 @@ const links = [
   { href: '#trust', label: 'Trust' },
   { href: '#agents', label: 'Agent API' },
   { href: '#roadmap', label: 'Roadmap' },
+  { href: '#faq', label: 'FAQ' },
 ];
+const home = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
 ---
 <header class="nav" data-nav>
   <div class="wrap bar">
-    <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/`} aria-label="Clario home"><Logo /></a>
+    <a href={home} aria-label="Clario home" class="home"><Logo /></a>
+
     <nav aria-label="Primary" class="links">
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
+
     <div class="right">
-      <a class="btn btn-primary sm" href="#waitlist">Get early access</a>
+      <a class="btn btn-primary sm cta" href="#waitlist">Get early access</a>
+      <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
+
+  <div class="sheet" id="mobile-menu" data-sheet hidden>
+    <nav aria-label="Mobile" class="wrap sheet-in">
+      {links.map((l) => <a href={l.href} data-close>{l.label}</a>)}
+      <a class="btn btn-primary full" href="#waitlist" data-close>Get early access</a>
+    </nav>
+  </div>
 </header>
+
 <style>
   .nav { position: sticky; top: 0; z-index: 50; transition: background .25s, box-shadow .25s, backdrop-filter .25s; }
-  .nav.scrolled { background: rgb(250 248 244 / .85); backdrop-filter: saturate(1.4) blur(14px); box-shadow: 0 1px 0 var(--line); }
+  .nav.scrolled, .nav.open { background: rgb(250 248 244 / .92); backdrop-filter: saturate(1.4) blur(14px); box-shadow: 0 1px 0 var(--line); }
   .bar { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 24px; }
-  .links { display: flex; gap: 6px; }
-  .links a { padding: 8px 14px; border-radius: 999px; text-decoration: none; font-size: .94rem; font-weight: 500; color: var(--ink-2); transition: color .15s, background .15s; }
+  .right { display: flex; align-items: center; gap: 10px; }
+  .links { display: flex; gap: 4px; }
+  .links a { padding: 8px 13px; border-radius: 999px; text-decoration: none; font-size: .94rem; font-weight: 500; color: var(--ink-2); transition: color .15s, background .15s; }
   .links a:hover { color: var(--ink); background: var(--paper-2); }
   .sm { padding: .7rem 1.15rem; font-size: .9rem; }
-  @media (max-width: 860px) { .links { display: none; } }
+
+  .burger { display: none; width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--line-strong); background: transparent; position: relative; padding: 0; }
+  .burger span { position: absolute; left: 12px; right: 12px; height: 2px; border-radius: 2px; background: var(--ink); transition: transform .25s ease, opacity .2s ease, top .25s ease; }
+  .burger span:nth-child(1) { top: 14px; }
+  .burger span:nth-child(2) { top: 20px; }
+  .burger span:nth-child(3) { top: 26px; }
+  .burger[aria-expanded='true'] span:nth-child(1) { top: 20px; transform: rotate(45deg); }
+  .burger[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+  .burger[aria-expanded='true'] span:nth-child(3) { top: 20px; transform: rotate(-45deg); }
+
+  .sheet { display: none; }
+  .sheet-in { display: grid; gap: 4px; padding-block: 12px 24px; }
+  .sheet-in a:not(.btn) { padding: 15px 4px; font-size: 1.15rem; font-weight: 550; text-decoration: none; border-bottom: 1px solid var(--line); }
+  .sheet-in a:not(.btn):active { color: var(--calm); }
+  .full { margin-top: 18px; padding-block: 1rem; width: 100%; }
+
+  @media (max-width: 960px) {
+    .links { display: none; }
+    .burger { display: block; }
+    .sheet:not([hidden]) { display: block; max-height: calc(100dvh - 72px); overflow-y: auto; animation: drop .22s ease; }
+  }
+  @media (max-width: 480px) {
+    .cta { display: none; } /* the CTA lives inside the menu on small phones */
+    .bar { height: 64px; }
+  }
+  @keyframes drop { from { opacity: 0; translate: 0 -8px; } }
 </style>
+
 <script>
-  const nav = document.querySelector('[data-nav]');
-  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 8);
-  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const burger = nav.querySelector<HTMLButtonElement>('[data-burger]')!;
+  const sheet = nav.querySelector<HTMLElement>('[data-sheet]')!;
+
+  const set = (open: boolean) => {
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    sheet.hidden = !open;
+    nav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  burger.addEventListener('click', () => set(sheet.hidden));
+  sheet.querySelectorAll('[data-close]').forEach((a) => a.addEventListener('click', () => set(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) { set(false); burger.focus(); } });
+  window.matchMedia('(min-width: 961px)').addEventListener('change', (m) => { if (m.matches) set(false); });
+
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
 </script>
